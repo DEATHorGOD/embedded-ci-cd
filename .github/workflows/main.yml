@@ -36,7 +36,7 @@ jobs:
 
       - name: Run Static Analysis
         # Thay đổi: Trỏ thẳng vào file blink.ino và thêm flag --force
-        run: cppcheck --error-exitcode=1 --language=c++ --force firmware/blink.ino
+        run: cppcheck --error-exitcode=1 --language=c++ --force firmware/firmware.ino
 
       - name: Run Python Automation Script
         run: python scripts/build_check.py
