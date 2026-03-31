@@ -30,9 +30,9 @@ jobs:
         run: sudo apt-get install -y cppcheck
 
       - name: Run Static Analysis
-        # Thêm --language=c++ để nó chịu đọc file .ino
+        # Thêm --language=c++ để  đọc file .ino
         run: cppcheck --error-exitcode=1 --language=c++ firmware/
 
       - name: Run Python Automation Script
-        # Nhớ kiểm tra tên file build_check.py không có dấu chấm thừa
+      
         run: python scripts/build_check.py
