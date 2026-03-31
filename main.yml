@@ -23,3 +23,8 @@ jobs:
 
     - name: Run Python Automation Script
       run: python scripts/build_check.py
+    - name: Install Cppcheck
+       run: sudo apt-get install cppcheck
+
+      - name: Run Static Analysis
+        run: cppcheck firmware/ --error-exitcode=1
