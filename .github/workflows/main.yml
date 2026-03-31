@@ -28,16 +28,15 @@ jobs:
 
       - name: Install Cppcheck
         run: sudo apt-get install -y cppcheck
-      - name: Debug Repository Structure
+
+      # Bước này cực kỳ quan trọng để debug nếu vẫn lỗi
+      - name: Check file existence
         run: |
-                 pwd
-                 ls -R
+          ls -R
 
       - name: Run Static Analysis
-        run: cppcheck --error-exitcode=1 --language=c++ ./firmware
+        # Thay đổi: Trỏ thẳng vào file blink.ino và thêm flag --force
+        run: cppcheck --error-exitcode=1 --language=c++ --force firmware/blink.ino
 
-      
-   
       - name: Run Python Automation Script
-      
         run: python scripts/build_check.py
