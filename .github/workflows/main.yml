@@ -28,11 +28,16 @@ jobs:
 
       - name: Install Cppcheck
         run: sudo apt-get install -y cppcheck
+      - name: Debug Repository Structure
+        run: |
+                 pwd
+                 ls -R
 
       - name: Run Static Analysis
-        # Thêm --language=c++ để  đọc file .ino
-        run: cppcheck --error-exitcode=1 --language=c++ firmware
+        run: cppcheck --error-exitcode=1 --language=c++ ./firmware
 
+      
+   
       - name: Run Python Automation Script
       
         run: python scripts/build_check.py
