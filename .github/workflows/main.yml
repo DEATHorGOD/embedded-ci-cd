@@ -1,31 +1,42 @@
 name: Embedded CI Pipeline
 
-on: [push, pull_request] # Tự động chạy khi bạn push code lên
+# 1. Pipeline sẽ tự chạy mỗi khi bạn Push code hoặc tạo Pull Request
+on: [push, pull_request]
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest # Mượn máy ảo Linux của GitHub
+    # 2. Chạy trên máy ảo Linux (Ubuntu) mới nhất của GitHub
+    runs-on: ubuntu-latest
 
     steps:
+    # Bước 1: Lấy code từ GitHub về máy ảo
     - name: Checkout code
       uses: actions/checkout@v3
 
+    # Bước 2: Cài đặt Python (Để chạy script tự động hóa)
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
+    # Bước 3: Cài đặt Arduino CLI (Sửa lỗi 127 bằng cách đưa vào /usr/local/bin)
     - name: Install Arduino CLI
       run: |
         curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+        sudo mv bin/arduino-cli /usr/local/bin/
         arduino-cli core update-index
         arduino-cli core install arduino:avr
 
+    # Bước 4: Cài đặt Cppcheck (Công cụ kiểm tra lỗi code tĩnh - Điểm cộng lớn cho Bosch)
+    - name: Install Cppcheck
+      run: sudo apt-get install -y cppcheck
+
+    # Bước 5: Chạy kiểm tra lỗi code tĩnh (Static Analysis)
+    # Nếu code có lỗi nghiêm trọng, bước này sẽ báo đỏ và dừng Pipeline
+    - name: Run Static Analysis (Cppcheck)
+      run: cppcheck firmware/ --error-exitcode=1
+
+    # Bước 6: Chạy Script Python để thực hiện Build Firmware
+    # Script này sẽ gọi arduino-cli để biên dịch code .ino thành file .hex
     - name: Run Python Automation Script
       run: python scripts/build_check.py
-
-     - name: Install Cppcheck
-      run: sudo apt-get install cppcheck
-
-     - name: Run Static Analysis
-     run: cppcheck firmware/ --error-exitcode=1
