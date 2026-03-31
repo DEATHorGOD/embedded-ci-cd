@@ -1,0 +1,28 @@
+name: Embedded CI Pipeline
+
+on: [push, pull_request] # Tự động chạy khi bạn push code lên
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Mượn máy ảo Linux của GitHub
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+       
+   name: Install Arduino CLI
+      run: |
+        # 1. Tải và cài đặt vào thư mục hiện tại
+        curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+        
+        # 2. Di chuyển file thực thi vào thư mục hệ thống để có thể gọi từ bất cứ đâu
+        sudo mv bin/arduino-cli /usr/local/bin/
+        
+        # 3. Cập nhật index và cài đặt core cho board Uno
+        arduino-cli core update-index
+        arduino-cli core install arduino:avr
