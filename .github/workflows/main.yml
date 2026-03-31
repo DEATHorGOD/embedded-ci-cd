@@ -31,7 +31,7 @@ jobs:
 
       - name: Run Static Analysis
         # Thêm --language=c++ để  đọc file .ino
-        run: cppcheck --error-exitcode=1 --language=c++ firmware/
+        run: cppcheck --error-exitcode=1 --language=c++ firmware
 
       - name: Run Python Automation Script
       
