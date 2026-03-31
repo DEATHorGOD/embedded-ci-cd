@@ -4,7 +4,7 @@ import sys
 def main():
     print("Starting build...")
     # Lệnh build cho Arduino Uno
-    build_cmd = "arduino-cli compile --fqbn arduino:avr:uno firmware/blink.ino"
+    build_cmd = "arduino-cli compile --fqbn arduino:avr:uno firmware/firmware.ino"
     
     result = subprocess.run(build_cmd, shell=True)
     
