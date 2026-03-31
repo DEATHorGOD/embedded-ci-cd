@@ -2,9 +2,9 @@ name: Embedded CI Pipeline
 
 on:
   push:
-    branches: [ "github", "main" ]
+    branches: [ "github" ]
   pull_request:
-    branches: [ "github", "main" ]
+    branches: [ "github" ]
 
 jobs:
   build-and-test:
@@ -30,7 +30,9 @@ jobs:
         run: sudo apt-get install -y cppcheck
 
       - name: Run Static Analysis
-        run: cppcheck firmware/ --error-exitcode=1
+        # Thêm --language=c++ để nó chịu đọc file .ino
+        run: cppcheck --error-exitcode=1 --language=c++ firmware/
 
       - name: Run Python Automation Script
+        # Nhớ kiểm tra tên file build_check.py không có dấu chấm thừa
         run: python scripts/build_check.py
